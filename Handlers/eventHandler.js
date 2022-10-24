@@ -12,7 +12,7 @@ class EventHandler {
           events = events.filter((x) => x.endsWith(".js"));
           events.forEach((event) => {
             const data = require(`../Events/${folder}/${event}`);
-            this.cclient.on(event.split(".")[0], data.bind(null, this.client));
+            this.client.on(event.split(".")[0], data.bind(null, this.client));
           })
         })
       });

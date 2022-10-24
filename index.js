@@ -7,7 +7,7 @@ const client = new Client({
 });
 
 client.commands = new Collection();
-client.events = new EventHandler(this);
+client.events = new EventHandler(client);
 client.events.init();
 
 InitCommands(client);
