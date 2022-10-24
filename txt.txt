@@ -15,7 +15,7 @@ module.exports = {
        .setRequired(true) 
         ),
 
-    async run(interaction, client){
+    async run(client, interaction){
         
         const canal = interaction.options.getString("canal");
         const logs = await LogsSchema.findOne({ guildId: interaction.guildId })

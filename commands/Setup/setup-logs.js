@@ -13,7 +13,7 @@ module.exports = {
         .setRequired(true)
     }),
    
-  run: async (interaction) => {
+  run: async (client, interaction) => {
     let channel = interaction.options.getChannel('canal')
 
      

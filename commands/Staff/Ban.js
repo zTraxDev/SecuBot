@@ -31,7 +31,7 @@ module.exports = {
    */
 
 
-    async run(interaction){
+    async run(client, interaction){
         const User = interaction.options.getUser('user');
         const reason = interaction.options.getString("reason") || "No especificada";
         const MemberRoles = interaction.member.roles.highest;

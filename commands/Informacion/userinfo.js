@@ -13,7 +13,7 @@ module.exports = {
 
 
 
-    run: async(interaction, client) => {
+    async run(client, interaction) {
         let member = interaction.options.getMember("usuario") || interaction.member
 
         let roles = member.roles.cache
