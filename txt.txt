@@ -1,0 +1,39 @@
+
+const SchemaSet = require("../../db/Schemas/schemaSet")
+const { SlashCommandBuilder, EmbedBuilder} = require("@discord.js/builders")
+const { PermissionsBitField } = require("discord.js")
+
+
+module.exports = {
+    data: new SlashCommandBuilder()
+    .setName("setlog")
+    .setDescription("Comando Para setear Logs del Bot")
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
+    .addStringOption(o => 0
+       .setName("canal")
+       .setDescription("Espesifica un Canal ")
+       .setRequired(true) 
+        ),
+
+    async run(interaction, client){
+        
+        const canal = interaction.options.getString("canal");
+        const logs = await LogsSchema.findOne({ guildId: interaction.guildId })
+        var objeto = {
+            Canal: "",
+            Message: ""
+        }
+        
+        const quecanal = await interaction.reply({ 
+            embeds: [
+                new EmbedBuilder()
+                .setTitle("**¿Que Canal Deseas usar?**")
+                .setDescription("*Simplemente menciona el Canal o Manda su ID*")
+            ],
+            ephemeral: true
+        });
+
+        
+         
+    }
+}
