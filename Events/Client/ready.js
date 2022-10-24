@@ -2,7 +2,9 @@ const mongoose = require("mongoose")
 const config = require("../../config.json")
 
 module.exports = async (client) => {
-   let prefix = "s!"
+   const slashcommands = client.commands.map(x => x.data);
+  await client.application.commands.set(slashcommands).then(console.log("[SLASH] Se han registrado los comandos"));
+
    client.user.setPresence([{ name: `Preparando la v0.1`, type: `WATCHING` }])
    mongoose.connect(config.mongodb || "", {
       KeepAlive: true,

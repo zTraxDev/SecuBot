@@ -14,20 +14,6 @@ async function InitCommands(client) {
             delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
         }
     });
-
-    try {
-        const rest = new REST({ version: '10'}).setToken(token);
-
-        console.log('[SLASH] Empezando a registrar slash commands...');
-
-        await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-            body: commands
-        });
-
-        console.log('[SLASH] Comandos han sido cargados correctamente.');
-    } catch (error) {
-        console.error(`[SLASH HANDLER] Error al cargar los slash commands: ${error}`);
-    }
 }
 
 module.exports = { InitCommands };
