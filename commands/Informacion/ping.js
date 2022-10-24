@@ -5,7 +5,7 @@ module.exports = {
     .setName("ping")
     .setDescription("Muestra el ping del bot"),
 
-  async run(interaction) {
+  async run(client, interaction) {
     const pingEmbed = new EmbedBuilder()
       .setTitle(`Conexion de ${interaction.client.user.tag}`)
       .setDescription(`Mi conexion es ${interaction.client.ws.ping}ms`)
