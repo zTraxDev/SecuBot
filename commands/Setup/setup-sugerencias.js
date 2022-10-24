@@ -16,29 +16,27 @@ module.exports = {
   run: async (client, interaction) => {
     let channel = interaction.options.getChannel("canal");
 
-    await Schema.findOne({ Guild: interaction.guild.id }, async (err, data) => {
-      if (err) return console.log(err);
-      if (data) {
-        data.Channel = channel.id;
-        data.save();
-      } else {
-        let newData = Schema({
-          Guild: interaction.guildId,
-          Canal: channel.id,
-        });
-        newData.save();
-      }
-
-      interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setTitle(`Exito ✅`)
-            .setDescription(
-              `${channel} Se ha establecido como canal de sugerencias`
-            )
-            .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true })),
-        ],
+    let data = await Schema.findOne({ Guild: interaction.guildId })
+    if (data) {
+      data.Canal = channel.id;
+      data.save();
+    } else {
+      let newData = Schema({
+        Guild: interaction.guildId,
+        Canal: channel.id,
       });
+      newData.save();
+    }
+
+    return await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setTitle(`Exito ✅`)
+          .setDescription(
+            `${channel} Se ha establecido como canal de sugerencias`
+          )
+          .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true })),
+      ],
     });
   },
 };

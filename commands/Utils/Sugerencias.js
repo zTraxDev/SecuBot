@@ -20,67 +20,37 @@ module.exports = {
     const text = interaction.options.getString("sugerencia");
 
     let data = await Schema.findOne({ Guild: interaction.guildId });
-    console.log(data);
-
     if (data) {
-      let canal = client.guilds.cache
-        .get(interaction.guildId)
-        .channels.cache.get(data.Canal);
+      let canal = interaction.guild.channels.cache.get(data.Canal);
 
-      canal.send({ content: text }).then((msg) => {
+      let embed = new EmbedBuilder()
+        .setTitle(`Sugerencia de ${interaction.user.tag}`)
+        .setAuthor({
+          name: interaction.user.tag,
+          iconURL: interaction.user.displayAvatarURL(),
+        })
+        .addFields({ name: `**Sug**`, value: `**${text}**` })
+        .setTimestamp()
+        .setColor("Blue");
+
+      canal.send({ embeds: [embed] }).then((msg) => {
         msg.react(`✅`);
         msg.react(`❌`);
       });
+
+      interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor("Green")
+            .setDescription(
+              `Tu sugerencia fue enviada al Canal ${interaction.guild.channels.cache.get(data.Canal)}`
+            )
+            .setThumbnail(interaction.user.displayAvatarURL()),
+        ],
+        ephemeral: true,
+      });
+    } else { 
+      return interaction.reply({ content: "No se ha establecido un canal de sugerencia", ephemeral: true})
     }
-
-    let embed = new EmbedBuilder()
-      .setTitle(`Sugerencia de ${interaction.user.tag}`)
-      .setAuthor({
-        name: interaction.user.tag,
-        iconURL: interaction.user.displayAvatarURL(),
-      })
-      .addFields({ name: `**Sug**`, value: `**${text}**` })
-      .setTimestamp()
-      .setColor("Blue");
-
-    interaction.reply({
-      embeds: [
-        new EmbedBuilder()
-          .setColor("Green")
-          .setDescription(
-            `Tu sugerencia fue enviada al Canal ${sugerenciaCanal}`
-          )
-          .setThumbnail(interaction.user.displayAvatarURL()),
-      ],
-      ephemeral: false,
-    });
-
-    if (!text)
-      return interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setTitle(`Error ❌`)
-            .setDescription(
-              `Debes de Espesificar un Texto para enviar la Sugerencia ${interaction.user.tag}`
-            ),
-        ],
-      });
-
-    if (
-      !interaction.guild.members.me.permissions.has(
-        PermissionFlagsBits.ManageChannels
-      )
-    )
-      return interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setTitle(`Error ❌`)
-            .setDescription(
-              `No tengo los permisos nesecarios ❌ | Nesecito el rol **GESTIONAR CANALES** para enviar sugerencias!`
-            ),
-        ],
-      });
-
-    console.log(`El Mensaje Se envio Correctamente ✅`);
-  },
+  }
 };
