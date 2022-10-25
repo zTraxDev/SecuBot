@@ -29,7 +29,7 @@ module.exports = {
           name: interaction.user.tag,
           iconURL: interaction.user.displayAvatarURL(),
         })
-        .addFields({ name: `**Sug**`, value: `**${text}**` })
+        .setDescription(`${text}`)
         .setTimestamp()
         .setColor("Blue");
 
