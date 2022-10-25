@@ -16,12 +16,12 @@ module.exports = {
   run: async (client, interaction) => {
     let channel = interaction.options.getChannel("canal");
 
-    await Schema.findOne({ Guild: interaction.guild.id }, async (err, data) => {
-      if (err) return console.log(err);
+    let data = await Schema.findOne({ Guild: interaction.guildId });
+
       if (data) {
-        data.Channel = channel.id;
+        data.Canal = channel.id;
         data.save();
-      }else {
+      } else {
         let newData = Schema({
           Guild: interaction.guildId,
           Canal: channel.id,
@@ -29,7 +29,7 @@ module.exports = {
         newData.save();
       }
 
-      interaction.reply({
+      return interaction.reply({
         embeds: [
           new EmbedBuilder()
             .setTitle(`Canal Establecido ✅`)
@@ -40,6 +40,5 @@ module.exports = {
         ],
         ephemeral: true
       });
-    });
-  },
+  }
 };

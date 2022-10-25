@@ -17,6 +17,3 @@ async function InitCommands(client) {
 }
 
 module.exports = { InitCommands };
-
-//Ahora vengo, dejare la sesion abierta
-// vale, esta bien
