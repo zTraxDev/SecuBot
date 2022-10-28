@@ -1,5 +1,5 @@
-const { Client, Collection } = require("discord.js");
-const { token } = require("./config.json");
+const { Client, Collection,  } = require("discord.js");
+const { token, clientId,  guildId } = require("./config.json");
 const EventHandler = require("./Handlers/eventHandler");
 const { InitCommands } = require("./Handlers/slashHandler");
 const client = new Client({
@@ -11,6 +11,15 @@ client.events = new EventHandler(client);
 client.events.init();
 
 InitCommands(client);
+
+const { REST, Routes } = require('discord.js');
+
+const rest = new REST({ version: '10' }).setToken(token);
+
+// ...
+
+
+// for global commands
 
 // client.on("messageCreate", async (message) => {
 //       if (message.author.bot || !message.guild || message.channel.type === "md") return;

@@ -1,7 +1,9 @@
 const { ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField}= require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const Schema = require("../../Models/schemaSanciones")
 //patron, todo en orden
-// ola 
+//Negrooo, mira el codigo mas para abajo
+// procedo a visualizar tu vaina
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("ban")
@@ -11,12 +13,6 @@ module.exports = {
             option
                 .setName("user")
                 .setDescription("El usuario a Banear")
-                .setRequired(true)
-        )
-        .addIntegerOption(option => 
-            option
-                .setName("dias")
-                .setDescription("Dias de Baneo")
                 .setRequired(true)
         )
         .addStringOption(option =>
@@ -30,15 +26,71 @@ module.exports = {
    * @param {ChatInputCommandInteraction} interaction
    */
 
-
+     
     async run(client, interaction){
         const User = interaction.options.getUser('user');
         const reason = interaction.options.getString("reason") || "No especificada";
         const MemberRoles = interaction.member.roles.highest;
         const Roles = interaction.guild.members.cache.get(User.id).roles.highest;
         const Bot = interaction.guild.members.me.roles.highest;
-        const days = interaction.options.get("dias")?.value || 7;
+
         
+
+//Que vrg xd //  ye
+        let data = await Schema.findOne({ User: User.id });
+
+        if(data){
+            let datos = data.Sancion || [];
+            datos.push({
+                "razon": reason,
+                "moderador": interaction.user.id,
+                "date": Date.now()
+            })
+
+          data.Sancion = datos;
+          await data.save()
+        } else {
+            let datos = []
+            datos.push({
+                "razon": reason,
+                "moderador": interaction.user.id,
+                "date": Date.now()
+            })
+
+            let newData = Schema({
+                Sancion: datos,
+                User: User.id
+            })
+
+            await newData.save()
+        }
+
+
+        let date = await Schema.findOne({ Guild: interaction.guildId });
+        if (date) {
+          let canal = interaction.guild.channels.cache.get(data.Canal);
+    
+          let embed = new EmbedBuilder()
+            .setTitle(`Log de Sanciones`)
+            .setAuthor({
+              name: interaction.user.tag,
+              iconURL: interaction.user.displayAvatarURL(),
+            })
+            .addFields(
+                {name: `Usuario`, value: `${User.tag}`}
+            )
+            .setTimestamp()
+            .setColor("Blue");
+    
+          canal.send({ embeds: [embed] }).then((msg) => {
+            msg.react(`✅`);
+            msg.react(`❌`);
+          });
+
+         }
+
+        
+
         if(User.id === interaction.member.id) return interaction.reply({
             embeds: [
                 new EmbedBuilder()
@@ -111,7 +163,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription(`**${User.tag}** Ha sido Baneado de ${interaction.guild.name} por ${days} dias.`)
+                        .setDescription(`**${User.tag}** Ha sido Baneado de ${interaction.guild.name}`)
                         .setTimestamp()
                 ]
             });

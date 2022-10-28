@@ -18,17 +18,18 @@ module.exports = {
 
     let data = await Schema.findOne({ Guild: interaction.guildId });
 
+
       if (data) {
         data.Canal = channel.id;
         data.save();
-      } else {
+      }
+      else {
         let newData = Schema({
           Guild: interaction.guildId,
           Canal: channel.id,
         });
         newData.save();
       }
-
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
@@ -40,5 +41,7 @@ module.exports = {
         ],
         ephemeral: true
       });
+    
+      
   }
 };

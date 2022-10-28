@@ -5,11 +5,11 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("set-logsanciones")
-    .setDescription("Configura un canal de Sugerencias")
+    .setDescription("Configura un canal de log de sanciones")
     .addChannelOption((option) => {
       return option
         .setName("canal")
-        .setDescription("Selecciona el canal de sugerencias que quieres poner")
+        .setDescription("Selecciona el canal de logs que quieres poner")
         .setRequired(true);
     }),
 
